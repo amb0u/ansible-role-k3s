@@ -1,0 +1,31 @@
+---
+
+# We're adding k3s_control_node to each host, this can be done in host_vars/
+# or group_vars/ as well - but for simplicity we are setting it here.
+k3s_cluster:
+  hosts:
+    kube-0:
+      ansible_user: kubeadmin
+      ansible_host: 172.233.253.51
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+    kube-1:
+      ansible_user: kubeadmin
+      ansible_host: 172.232.62.99
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+    kube-2:
+      ansible_user: kubeadmin
+      ansible_host: 172.232.62.91
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: true
+    kube-3:
+      ansible_user: kubeadmin
+      ansible_host: 172.232.53.188
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: false
+    kube-4:
+      ansible_user: kubeadmin
+      ansible_host: 172.232.62.133
+      ansible_python_interpreter: /usr/bin/python3
+      k3s_control_node: false

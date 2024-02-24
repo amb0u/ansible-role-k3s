@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: core
+  namespace: argocd
+spec:
+  description: Core ArgoCD Project
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+--- 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: core-rbac-cm
+  namespace: argocd
+data:
+  policy.default: role:core
+  policy.csv: |
+    p, proj:core:my-role, applications, get, core/*, allow
+    p, proj:core:my-role, applications, sync, core/*, allow
+    p, proj:core:my-role, applications, override, core/*, allow
+    p, proj:core:my-role, applications, delete, core/*, allow
+--- 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: readonly-rbac-cm
+  namespace: argocd
+data:
+  policy.default: role:readonly
+  policy.csv: |
+    p, readonly, applications, get, *, allow
+    p, readonly, projects, get, *, allow
+
+

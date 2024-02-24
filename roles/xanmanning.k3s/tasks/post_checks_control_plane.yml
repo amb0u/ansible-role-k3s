@@ -1,5 +1,13 @@
 ---
 
+- name: Copying kubeconfig from k3s_control_node
+  ansible.builtin.fetch:
+    src: "{{ ansible_user_dir }}/.kube/config"
+    dest: ./kubeconfig
+    flat: true
+  when: k3s_control_node
+  run_once: true
+
 - name: Check that the control plane is available to accept connections
   ansible.builtin.wait_for:
     port: "{{ k3s_runtime_config['https-listen-port'] | default('6443') }}"

@@ -1,0 +1,37 @@
+---
+
+- name: Deploy vip manifest
+  include_tasks: vip.yml
+
+# - name: Create manifests directory on first master
+#   become: true
+#   file:
+#     path: /var/lib/rancher/k3s/server/manifests
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0644
+#   when: "'kube-0' in ansible_play_hosts and play_hosts.index('kube-0') == 0"
+
+# - name: "Download to first master: manifest for metallb-{{ metal_lb_type }}"
+#   become: true
+#   ansible.builtin.get_url:
+#     url: "https://raw.githubusercontent.com/metallb/metallb/{{ metal_lb_controller_tag_version }}/config/manifests/metallb-{{ metal_lb_type }}.yaml"  # noqa yaml[line-length]
+#     dest: "/var/lib/rancher/k3s/server/manifests/metallb-crds.yaml"
+#     owner: root
+#     group: root
+#     mode: 0644
+#   when: "'kube-0' in ansible_play_hosts and play_hosts.index('kube-0') == 0"
+
+# - name: Set image versions in manifest for metallb-{{ metal_lb_type }}
+#   become: true
+#   ansible.builtin.replace:
+#     path: "/var/lib/rancher/k3s/server/manifests/metallb-crds.yaml"
+#     regexp: "{{ item.change | ansible.builtin.regex_escape }}"
+#     replace: "{{ item.to }}"
+#   with_items:
+#     - change: "metallb/speaker:{{ metal_lb_controller_tag_version }}"
+#       to: "metallb/speaker:{{ metal_lb_speaker_tag_version }}"
+#   loop_control:
+#     label: "{{ item.change }} => {{ item.to }}"
+#   when: "'kube-0' in ansible_play_hosts and play_hosts.index('kube-0') == 0"
